@@ -13,7 +13,10 @@ spec:
         app: thanos-receiver
     spec:
       containers:
-        - name: thanos-receiver
-          image: bitnami/thanos:latest
+      - name: thanos-frontend
+        image: bitnami/thanos:latest
+        args:
+        - "query-frontend"
+        - "--log.level=info"
           ports:
-            - containerPort: 9090
+          - containerPort: 9090

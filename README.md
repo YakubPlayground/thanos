@@ -32,6 +32,10 @@ kubectl apply -f thanos/frontend/frontend-service.yaml
 kubectl apply -f thanos/receiver/receiver-deployment.yaml
 kubectl apply -f thanos/receiver/receiver-service.yaml
 
+# Wait for Thanos frontend pod to be ready
+echo "Waiting for Thanos frontend pod to be ready..."
+kubectl wait --for=condition=ready pod -l app=thanos-frontend --timeout=300s
+
 # Access Thanos
 echo "Accessing Thanos service..."
 minikube service thanos-frontend-service
@@ -156,3 +160,4 @@ This will set up the frontend and receiver components of the Thanos platform on 
 ### Receiver
 
 The receiver component handles incoming data and processes it for storage and analysis.
+
