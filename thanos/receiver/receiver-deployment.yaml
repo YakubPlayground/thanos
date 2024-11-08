@@ -13,7 +13,7 @@ spec:
         app: thanos-receiver
     spec:
       containers:
-      - name: thanos-receiver
-        image: bitnami/thanos:latest
-        ports:
-        - containerPort: 9090
+        - name: thanos-receiver
+          image: bitnami/thanos:latest
+          ports:
+            - containerPort: 9090
