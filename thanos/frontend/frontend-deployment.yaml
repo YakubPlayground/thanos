@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: thanos-frontend
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: thanos-frontend
+    template:
+        metadata:
+            labels:
+                app: thanos-frontend
+        spec:
+            containers:
+            - name: thanos-frontend
+                image: bitnami/thanos:latest
+                ports:
+                - containerPort: 80
