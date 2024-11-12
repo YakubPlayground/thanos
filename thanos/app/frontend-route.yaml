@@ -1,17 +1,21 @@
 apiVersion: networking.k8s.io/v1
-kind: Route
+kind: Ingress
 metadata:
   name: monitoring-testing-october24
   namespace: monitoring-testing-october24
 spec:
-  host: front.refactored-space-bassoon-6447q4747g5h56rq.github.dev
-  port:
-    targetPort: http
+  rules:
+  - host: front.refactored-space-bassoon-6447q4747g5h56rq.github.dev
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: query-frontend
+            port:
+              number: 80
   tls:
-    insecureEdgeTerminationPolicy: Redirect
-    termination: edge
-  to:
-    kind: Service
-    name: query-frontend
-    weight: 100
-  wildcardPolicy: None
+  - hosts:
+    - front.refactored-space-bassoon-6447q4747g5h56rq.github.dev
+    secretName: tls-secret

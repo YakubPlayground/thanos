@@ -1,16 +1,21 @@
 apiVersion: networking.k8s.io/v1
-kind: Route
+kind: Ingress
 metadata:
   name: receive
   namespace: monitoring-testing-october24
 spec:
-  host: receive.refactored-space-bassoon-6447q4747g5h56rq.github.dev
-  port:
-    targetPort: remote
+  rules:
+  - host: receive.refactored-space-bassoon-6447q4747g5h56rq.github.dev
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: receive
+            port:
+              number: 80
   tls:
-    termination: edge
-  to:
-    kind: Service
-    name: receive
-    weight: 100
-  wildcardPolicy: None
+  - hosts:
+    - receive.refactored-space-bassoon-6447q4747g5h56rq.github.dev
+    secretName: receive-tls

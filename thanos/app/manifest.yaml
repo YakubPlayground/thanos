@@ -1,19 +1,45 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: example-deployment
+  name: thanos-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: example-app
+      app: thanos-app
   template:
     metadata:
       labels:
-        app: example-app
+        app: thanos-app
     spec:
       containers:
-      - name: example-container
+      - name: nginx-container
         image: nginx:latest
         ports:
         - containerPort: 80
+          name: http
+      - name: thanos-sidecar
+        image: bitnami/thanos:latest
+        args:
+          - sidecar
+          - --tsdb.path=/var/thanos/store
+          - --prometheus.url=http://localhost:9090
+          - --grpc-address=0.0.0.0:10901
+          - --http-address=0.0.0.0:10902
+          - --objstore.config-file=/etc/thanos/objstore.yml
+        ports:
+          - containerPort: 10901
+            name: grpc
+          - containerPort: 10902
+            name: http
+        volumeMounts:
+          - name: prometheus-data
+            mountPath: /var/thanos/store
+          - name: thanos-objstore
+            mountPath: /etc/thanos
+      volumes:
+        - name: prometheus-data
+          emptyDir: {}
+        - name: thanos-objstore
+          configMap:
+            name: thanos-objstore-config

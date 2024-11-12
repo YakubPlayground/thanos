@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: frontend.example.com
+  - host: front.refactored-space-bassoon-6447q4747g5h56rq.github.dev
     http:
       paths:
       - path: /
