@@ -9,7 +9,7 @@ metadata:
 # Declare variables to be passed into your templates.
 
 data:
-  global:
+  global: |
     imageRegistry: ""
     imagePullSecrets: []
     storageClass: ""
@@ -56,11 +56,11 @@ data:
   tolerations: []
   affinity: {}
 
-  query:
+  query: |
     replicaCount: 1
     image:
       registry: docker.io
-      repository: bitnami/thanos
+      repository: bitnami/thanos-query
       tag: 0.23.1
       pullPolicy: IfNotPresent
     service:
@@ -78,11 +78,11 @@ data:
     tolerations: []
     affinity: {}
 
-  storegateway:
+  storegateway: |
     replicaCount: 1
     image:
       registry: docker.io
-      repository: bitnami/thanos
+      repository: bitnami/thanos-storegateway
       tag: 0.23.1
       pullPolicy: IfNotPresent
     service:
@@ -100,11 +100,11 @@ data:
     tolerations: []
     affinity: {}
 
-  compactor:
+  compactor: |
     replicaCount: 1
     image:
       registry: docker.io
-      repository: bitnami/thanos
+      repository: bitnami/thanos-compactor
       tag: 0.23.1
       pullPolicy: IfNotPresent
     service:
@@ -122,11 +122,11 @@ data:
     tolerations: []
     affinity: {}
 
-  ruler:
+  ruler: |
     replicaCount: 1
     image:
       registry: docker.io
-      repository: bitnami/thanos
+      repository: bitnami/thanos-ruler
       tag: 0.23.1
       pullPolicy: IfNotPresent
     service:
