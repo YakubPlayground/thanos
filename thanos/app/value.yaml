@@ -143,3 +143,8 @@ data:
     nodeSelector: {}
     tolerations: []
     affinity: {}
+
+  readwrite: |
+    enabled: true
+    args:
+      - --web.external-prefix=/thanos-readwrite

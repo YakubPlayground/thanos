@@ -1,0 +1,24 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thanos-frontend
+  namespace: monitoring-testing-october24
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thanos-frontend
+  template:
+    metadata:
+      labels:
+        app: thanos-frontend
+    spec:
+      containers:
+      - name: thanos-frontend
+        image: bitnami/thanos:latest
+        args:
+          - "query-frontend"
+          - "--query.frontend.downstream-url=http://thanos-query.monitoring-testing-october24.svc:9090"
+        ports:
+        - containerPort: 9091
