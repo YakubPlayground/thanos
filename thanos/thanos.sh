@@ -37,13 +37,12 @@ kubectl get pods -n monitoring-testing-october24
 kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=thanos -n monitoring-testing-october24 --timeout=300s
 
 # Wait for services to be created
-for svc in thanos-release-query thanos-release-storegateway thanos-release-receiver thanos-release-frontend thanos-release-readwrite; do
+for svc in thanos-release-frontend thanos-release-receiver thanos-release-readwrite; do
   kubectl wait --for=condition=available --timeout=300s svc/$svc -n monitoring-testing-october24 || echo "Service $svc not found"
 done
 
-# Forward ports (example: forwarding port 9090 of the Thanos Query pod to localhost:9090)
-kubectl get svc -n monitoring-testing-october24 thanos-release-query && kubectl port-forward -n monitoring-testing-october24 svc/thanos-release-query 9090:9090 &
-kubectl get svc -n monitoring-testing-october24 thanos-release-storegateway && kubectl port-forward -n monitoring-testing-october24 svc/thanos-release-storegateway 10902:10901 &
+# Forward ports (example: forwarding port 9090 of the Thanos Frontend pod to localhost:9090)
+kubectl get svc -n monitoring-testing-october24 thanos-release-frontend && kubectl port-forward -n monitoring-testing-october24 svc/thanos-release-frontend 9090:9090 &
 kubectl get svc -n monitoring-testing-october24 thanos-release-receiver && kubectl port-forward -n monitoring-testing-october24 svc/thanos-release-receiver 10903:10901 &
 kubectl get svc -n monitoring-testing-october24 thanos-release-frontend && kubectl port-forward -n monitoring-testing-october24 svc/thanos-release-frontend 9091:9091 &
 kubectl get svc -n monitoring-testing-october24 thanos-release-readwrite && kubectl port-forward -n monitoring-testing-october24 svc/thanos-release-readwrite 9092:9092 &

@@ -56,12 +56,12 @@ data:
   tolerations: []
   affinity: {}
 
-  query: |
+  frontend: |
     replicaCount: 1
     image:
       registry: docker.io
-      repository: bitnami/thanos-query
-      tag: 0.23.1
+      repository: bitnami/thanos
+      tag: 0.36.1
       pullPolicy: IfNotPresent
     service:
       type: ClusterIP
@@ -70,73 +70,7 @@ data:
       enabled: false
       annotations: {}
       hosts:
-        - host: query.example.local
-          paths: []
-      tls: []
-    resources: {}
-    nodeSelector: {}
-    tolerations: []
-    affinity: {}
-
-  storegateway: |
-    replicaCount: 1
-    image:
-      registry: docker.io
-      repository: bitnami/thanos-storegateway
-      tag: 0.23.1
-      pullPolicy: IfNotPresent
-    service:
-      type: ClusterIP
-      port: 10901
-    ingress:
-      enabled: false
-      annotations: {}
-      hosts:
-        - host: storegateway.example.local
-          paths: []
-      tls: []
-    resources: {}
-    nodeSelector: {}
-    tolerations: []
-    affinity: {}
-
-  compactor: |
-    replicaCount: 1
-    image:
-      registry: docker.io
-      repository: bitnami/thanos-compactor
-      tag: 0.23.1
-      pullPolicy: IfNotPresent
-    service:
-      type: ClusterIP
-      port: 10902
-    ingress:
-      enabled: false
-      annotations: {}
-      hosts:
-        - host: compactor.example.local
-          paths: []
-      tls: []
-    resources: {}
-    nodeSelector: {}
-    tolerations: []
-    affinity: {}
-
-  ruler: |
-    replicaCount: 1
-    image:
-      registry: docker.io
-      repository: bitnami/thanos-ruler
-      tag: 0.23.1
-      pullPolicy: IfNotPresent
-    service:
-      type: ClusterIP
-      port: 10903
-    ingress:
-      enabled: false
-      annotations: {}
-      hosts:
-        - host: ruler.example.local
+        - host: frontend.example.local
           paths: []
       tls: []
     resources: {}
@@ -148,3 +82,25 @@ data:
     enabled: true
     args:
       - --web.external-prefix=/thanos-readwrite
+
+  receiver: |
+    replicaCount: 1
+    image:
+      registry: docker.io
+      repository: bitnami/thanos
+      tag: 0.36.1
+      pullPolicy: IfNotPresent
+    service:
+      type: ClusterIP
+      port: 10901
+    ingress:
+      enabled: false
+      annotations: {}
+      hosts:
+        - host: receiver.example.local
+          paths: []
+      tls: []
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
