@@ -56,6 +56,14 @@ data:
   tolerations: []
   affinity: {}
 
+  service:
+    query-frontend:
+      port: 9090
+    receiver:
+      port: 10901
+    readwrite:
+      port: 9091
+
   frontend: |
     replicaCount: 1
     image:
@@ -98,6 +106,28 @@ data:
       annotations: {}
       hosts:
         - host: receiver.example.local
+          paths: []
+      tls: []
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+
+  query-frontend: |
+    replicaCount: 1
+    image:
+      registry: docker.io
+      repository: bitnami/thanos
+      tag: 0.36.1
+      pullPolicy: IfNotPresent
+    service:
+      type: ClusterIP
+      port: 9090
+    ingress:
+      enabled: false
+      annotations: {}
+      hosts:
+        - host: query-frontend.example.local
           paths: []
       tls: []
     resources: {}

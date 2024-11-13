@@ -44,8 +44,7 @@ done
 # Forward ports (example: forwarding port 9090 of the Thanos Frontend pod to localhost:9090)
 kubectl get svc -n monitoring-testing-october24 thanos-release-frontend && kubectl port-forward -n monitoring-testing-october24 svc/thanos-release-frontend 9090:9090 &
 kubectl get svc -n monitoring-testing-october24 thanos-release-receiver && kubectl port-forward -n monitoring-testing-october24 svc/thanos-release-receiver 10903:10901 &
-kubectl get svc -n monitoring-testing-october24 thanos-release-frontend && kubectl port-forward -n monitoring-testing-october24 svc/thanos-release-frontend 9091:9091 &
-kubectl get svc -n monitoring-testing-october24 thanos-release-readwrite && kubectl port-forward -n monitoring-testing-october24 svc/thanos-release-readwrite 9092:9092 &
+kubectl get svc -n monitoring-testing-october24 thanos-release-readwrite && kubectl port-forward -n monitoring-testing-october24 svc/thanos-release-readwrite 9091:9091 &
 
 # Check the status of the services
 kubectl get service -n monitoring-testing-october24
