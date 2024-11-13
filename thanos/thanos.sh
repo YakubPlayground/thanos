@@ -25,6 +25,9 @@ sudo systemctl restart nginx
 # Check the status of the pods
 kubectl get pods -n monitoring-testing-october24
 
+# Check the status of the pods and wait until they are ready
+kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=thanos -n monitoring-testing-october24 --timeout=300s
+
 # Forward ports (example: forwarding port 9090 of the Thanos Query pod to localhost:9090)
 kubectl port-forward -n monitoring-testing-october24 svc/thanos-release-query 9090:9090 &
 kubectl port-forward -n monitoring-testing-october24 svc/thanos-release-storegateway 10902:10901 &
