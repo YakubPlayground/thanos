@@ -34,6 +34,7 @@ spec:
         image: bitnami/thanos:latest
         args:
           - --web.external-prefix=/thanos-readwrite
+          - --web.external-url=https://refactored-space-bassoon-6447q4747g5h56rq.github.dev/
         ports:
           - containerPort: 9092
       volumes:

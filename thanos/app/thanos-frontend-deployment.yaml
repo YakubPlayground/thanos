@@ -1,4 +1,3 @@
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -18,7 +17,7 @@ spec:
       - name: thanos-frontend
         image: bitnami/thanos:latest
         args:
-          - "query-frontend"
-          - "--query.frontend.downstream-url=http://thanos-query.monitoring-testing-october24.svc:9090"
+          - --web.external-prefix=/thanos-frontend
+          - --web.external-url=https://refactored-space-bassoon-6447q4747g5h56rq.github.dev/
         ports:
-        - containerPort: 9091
+        - containerPort: 9090
