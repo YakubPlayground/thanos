@@ -1,19 +1,22 @@
 #!/bin/bash
 
-# Start Minikube
-minikube start
+# Start Minikube if not already running
+minikube status || minikube start
 
 # Create a namespace for Thanos if it doesn't exist
 kubectl get namespace monitoring-testing-october24 || kubectl create namespace monitoring-testing-october24
 
-# Add the Bitnami repository
-helm repo add bitnami https://charts.bitnami.com/bitnami
+# Add the Bitnami repository if not already added
+helm repo list | grep -q 'bitnami' || helm repo add bitnami https://charts.bitnami.com/bitnami
 
 # Update Helm repositories
 helm repo update
 
-# Install the Thanos Helm chart
-helm install thanos-release bitnami/thanos --namespace monitoring-testing-october24
+# Install or upgrade the Thanos Helm chart with the external prefix
+helm upgrade --install thanos-release bitnami/thanos --namespace monitoring-testing-october24 --set query.args="{--web.external-prefix=/thanos}"
+
+# Create a symbolic link if it doesn't already exist
+[ -L /etc/nginx/conf.d/thanos.conf ] || sudo ln -s /workspaces/thanos/app/thanos.conf /etc/nginx/conf.d/thanos.conf
 
 # Check the status of the pods
 kubectl get pods -n monitoring-testing-october24
