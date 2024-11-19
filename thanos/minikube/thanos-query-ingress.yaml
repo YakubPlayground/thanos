@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: thanos-query-ingress
+  namespace: monitoring-testing-october20
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: refactored-space-bassoon-6447q4747g5h56rq.github.dev
+    http:
+      paths:
+      - path: /query
+        pathType: Prefix
+        backend:
+          service:
+            name: thanos-query
+            port:
+              number: 10902

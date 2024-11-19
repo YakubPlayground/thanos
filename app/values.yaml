@@ -1,0 +1,23 @@
+queryFrontend:
+  enabled: true
+  service:
+    type: LoadBalancer
+    port: 9092
+  extraArgs:
+    - "--http-address=0.0.0.0:9092"
+
+receive:
+  enabled: true
+  service:
+    type: LoadBalancer
+    port: 9091
+  extraArgs:
+    - "--http-address=0.0.0.0:9091"
+
+storegateway:
+  enabled: true
+  service:
+    type: LoadBalancer
+    port: 9090
+  extraArgs:
+    - "--http-address=0.0.0.0:9090"

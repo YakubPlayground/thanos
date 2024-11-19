@@ -61,3 +61,21 @@ spec:
       targetPort: 10902
   selector:
     app: thanos-compactor
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: thanos-query-frontend
+  namespace: monitoring-testing-october24
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 9091
+      targetPort: 9091
+    - name: grpc
+      port: 10901
+      targetPort: 10901
+  selector:
+    app: thanos-query-frontend

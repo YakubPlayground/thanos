@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thanos-read-write
+  namespace: monitoring-testing-october20
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thanos-read-write
+  template:
+    metadata:
+      labels:
+        app: thanos-read-write
+    spec:
+      containers:
+      - name: thanos-read-write
+        image: bitnami/thanos:latest
+        args:
+          - "store"
+          - "--http-address=0.0.0.0:9090"
+        ports:
+        - containerPort: 9090

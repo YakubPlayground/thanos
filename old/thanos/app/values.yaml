@@ -1,0 +1,226 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: thanos-values
+  namespace: monitoring-testing-october24
+
+# Default values for Thanos.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+data:
+  global: |
+    imageRegistry: ""
+    imagePullSecrets: []
+    storageClass: ""
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  serviceAccount:
+    create: true
+    name: ""
+
+  rbac:
+    create: true
+
+  podSecurityPolicy:
+    enabled: false
+
+  securityContext:
+    enabled: true
+    fsGroup: 1001
+    runAsUser: 1001
+
+  service:
+    type: ClusterIP
+    port: 9090
+    query-frontend:
+      port: 9090
+    receiver:
+      port: 10901
+    readwrite:
+      port: 9091
+
+  ingress:
+    enabled: false
+    annotations: {}
+    hosts:
+      - host: chart-example.local
+        paths: []
+    tls: []
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  service:
+    query-frontend:
+      port: 9090
+    receiver:
+      port: 10901
+    readwrite:
+      port: 9091
+
+  query-frontend:
+    replicaCount: 1
+    image:
+      registry: docker.io
+      repository: bitnami/thanos
+      tag: 0.36.1
+      pullPolicy: IfNotPresent
+    service:
+      type: ClusterIP
+      port: 9090
+    ingress:
+      enabled: false
+      annotations: {}
+      hosts:
+        - host: query-frontend.refactored-space-bassoon-6447q4747g5h56rq.github.dev
+          paths: []
+      tls: []
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    # Arguments to pass to the readwrite component
+    args:
+      - "--some-argument=value"
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+    service:
+      type: ClusterIP
+      ports:
+        http: 9091
+        grpc: 10901
+    persistence:
+      enabled: true
+      storageClass: "standard"
+      accessModes:
+        - ReadWriteOnce
+      size: 10Gi
+
+  deployment:
+    replicaCount: 1
+    image:
+      registry: docker.io
+      repository: bitnami/thanos
+      tag: 0.36.1
+      pullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+
+  service:
+    query-frontend:
+      type: ClusterIP
+      port: 9090
+    receiver:
+      type: ClusterIP
+      port: 10901
+    readwrite:
+      type: ClusterIP
+      ports:
+        http: 9091
+        grpc: 10901
+
+  persistence:
+    enabled: true
+    storageClass: "standard"
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+
+query-frontend:
+  replicaCount: 1
+  image:
+    registry: docker.io
+    repository: bitnami/thanos
+    tag: 0.36.1
+    pullPolicy: IfNotPresent
+  service:
+    name: thanos-query-frontend
+    type: ClusterIP
+    port: 9090
+  ingress:
+    enabled: false
+    annotations: {}
+    hosts:
+      - host: query-frontend.refactored-space-bassoon-6447q4747g5h56rq.github.dev
+        paths: []
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+receiver:
+  replicaCount: 1
+  image:
+    registry: docker.io
+    repository: bitnami/thanos
+    tag: 0.36.1
+    pullPolicy: IfNotPresent
+  service:
+    name: thanos-receiver
+    type: ClusterIP
+    port: 10901
+  ingress:
+    enabled: false
+    annotations: {}
+    hosts:
+      - host: receiver.refactored-space-bassoon-6447q4747g5h56rq.github.dev
+        paths: []
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+readwrite:
+  replicaCount: 1
+  image:
+    registry: docker.io
+    repository: bitnami/thanos
+    tag: 0.36.1
+    pullPolicy: IfNotPresent
+  service:
+    name: thanos-readwrite
+    type: ClusterIP
+    ports:
+      http: 9091
+      grpc: 10901
+  ingress:
+    enabled: false
+    annotations: {}
+    hosts:
+      - host: readwrite.refactored-space-bassoon-6447q4747g5h56rq.github.dev
+        paths: []
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  persistence:
+    enabled: true
+    storageClass: "standard"
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi

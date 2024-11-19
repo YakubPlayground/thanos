@@ -1,0 +1,129 @@
+# Object Storage Configuration
+objstoreConfig: |
+  type: FILESYSTEM
+  config:
+    directory: /data
+
+# Query Component Configuration
+query:
+  enabled: true
+  service:
+    type: ClusterIP
+    port: 10902
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+    limits:
+      memory: 512Mi
+      cpu: 500m
+
+# Query Frontend Component Configuration
+queryFrontend:
+  enabled: true
+  service:
+    type: ClusterIP
+    port: 9095
+  cache:
+    type: IN-MEMORY
+    config: |
+      type: IN-MEMORY
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+    limits:
+      memory: 512Mi
+      cpu: 500m
+
+# Store Gateway Configuration
+storegateway:
+  enabled: true
+  service:
+    type: ClusterIP
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: 500m
+    limits:
+      memory: 1Gi
+      cpu: 1
+
+# Compact Component Configuration
+compact:
+  enabled: true
+  service:
+    type: ClusterIP
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: 500m
+    limits:
+      memory: 1Gi
+      cpu: 1
+
+# Ruler Component Configuration
+ruler:
+  enabled: true
+  alertmanagers:
+    - http://alertmanager.monitoring-testing-october20.svc:9093
+  config: |
+    groups:
+    - name: example.rules
+      rules:
+      - alert: ExampleAlert
+        expr: vector(1)
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Example Alert"
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+    limits:
+      memory: 512Mi
+      cpu: 500m
+
+# Sidecar Component Configuration
+sidecar:
+  enabled: true
+  prometheus:
+    url: http://prometheus-operated:9090
+  service:
+    type: ClusterIP
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+    limits:
+      memory: 512Mi
+      cpu: 500m
+
+# General Resource Configuration
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 250m
+  limits:
+    memory: 512Mi
+    cpu: 500m
+
+# Persistent Volume Configuration
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClass: "standard"
+
+# Log Level for Debugging
+logLevel: debug
+
+# Node Selector (Optional)
+nodeSelector: {}
+
+# Tolerations (Optional)
+tolerations: []
+
+# Affinity Rules (Optional)
+affinity: {}
