@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: thanos-ruler-route
+  namespace: monitoring-testing-october20
+spec:
+  to:
+    kind: Service
+    name: thanos-ruler
+  port:
+    targetPort: 9090
+  tls:
+    termination: edge
+  host: thanos-ruler.local

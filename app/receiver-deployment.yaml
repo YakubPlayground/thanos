@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: thanos-receiver
+  namespace: monitoring-testing-october20
 spec:
   replicas: 1
   selector:
@@ -13,7 +14,10 @@ spec:
         app: thanos-receiver
     spec:
       containers:
-        - name: thanos-receiver
-          image: bitnami/thanos:latest
-          ports:
-            - containerPort: 9090
+      - name: thanos-receiver
+        image: bitnami/thanos:latest
+        args:
+          - "receive"
+          - "--http-address=0.0.0.0:9091"
+        ports:
+        - containerPort: 9091

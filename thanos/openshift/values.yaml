@@ -1,0 +1,85 @@
+receive:
+  enabled: true
+  replicaCount: 1
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1001 
+    fsGroup: 1001
+  config:
+    receive:
+      hashrings:
+        - endpoints:
+            - thanos-receive-0.thanos-receive.monitoring-testing-october20.svc.cluster.local:10901
+            - thanos-receive-1.thanos-receive.monitoring-testing-october20.svc.cluster.local:10901
+  service:
+    type: ClusterIP 
+
+query:
+  enabled: true
+  replicaCount: 1
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    fsGroup: 1001
+
+queryFrontend:
+  enabled: true
+  replicaCount: 1
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    fsGroup: 1001
+
+ruler:
+  enabled: true
+  replicaCount: 1
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    fsGroup: 1001
+
+storegateway:
+  enabled: true
+  replicaCount: 1
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    fsGroup: 1001
+
+compactor:
+  enabled: true
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    fsGroup: 1001
+
+objstoreConfig:
+  type: s3
+  config:
+    bucket: "your-bucket-name"
+    endpoint: "your-s3-endpoint"
+    access_key: "your-access-key"
+    secret_key: "your-secret-key"
+    insecure: false  # Set to true if using HTTP instead of HTTPS
+
+service:
+  type: ClusterIP
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+                - thanos
+        topologyKey: kubernetes.io/hostname

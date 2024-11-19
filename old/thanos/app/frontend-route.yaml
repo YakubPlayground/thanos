@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: monitoring-testing-october24
+  namespace: monitoring-testing-october24
+spec:
+  rules:
+  - host: front.refactored-space-bassoon-6447q4747g5h56rq.github.dev
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: query-frontend
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - front.refactored-space-bassoon-6447q4747g5h56rq.github.dev
+    secretName: tls-secret

@@ -1,0 +1,45 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thanos-query-frontend
+  namespace: monitoring-testing-october24
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thanos-query-frontend
+  template:
+    metadata:
+      labels:
+        app: thanos-query-frontend
+    spec:
+      serviceAccountName: thanos-query-frontend
+      containers:
+        - name: thanos-query-frontend
+          image: docker.io/bitnami/thanos:0.36.1
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--some-argument=value"
+          ports:
+            - name: http
+              containerPort: 9091
+            - name: grpc
+              containerPort: 10901
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          volumeMounts:
+            - name: storage
+              mountPath: /data
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: thanos-query-frontend-pvc
+      nodeSelector: {}
+      tolerations: []
+      affinity: {}

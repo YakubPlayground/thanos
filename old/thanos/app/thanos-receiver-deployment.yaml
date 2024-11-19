@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thanos-receiver
+  namespace: monitoring-testing-october24
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thanos-receiver
+  template:
+    metadata:
+      labels:
+        app: thanos-receiver
+    spec:
+      containers:
+      - name: thanos-receiver
+        image: bitnami/thanos:latest
+        args:
+          - "receive"
+          - "--receive.hashrings-file=/etc/thanos/hashrings.json"
+          - "--receive.local-endpoint=$(POD_IP):10901"
+        ports:
+        - containerPort: 10901
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        volumeMounts:
+        - name: config
+          mountPath: /etc/thanos
+      - name: thanos-readwrite
+        image: bitnami/thanos:latest
+        args:
+          - --web.external-prefix=/thanos-readwrite
+          - --web.external-url=https://refactored-space-bassoon-6447q4747g5h56rq.github.dev/
+        ports:
+          - containerPort: 9092
+      volumes:
+      - name: config
+        configMap:
+          name: thanos-receiver-config

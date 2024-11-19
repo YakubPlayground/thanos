@@ -1,0 +1,7 @@
+remote_write:
+  - url: "http://thanos-receive.local/api/v1/receive"
+    queue_config:
+      batch_send_deadline: 5s
+      max_samples_per_send: 500
+      max_shards: 10
+      min_shards: 1

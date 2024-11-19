@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thanos-frontend
+  namespace: monitoring-testing-october24
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thanos-frontend
+  template:
+    metadata:
+      labels:
+        app: thanos-frontend
+    spec:
+      containers:
+      - name: thanos-frontend
+        image: bitnami/thanos:latest
+        args:
+          - --web.external-prefix=/thanos-frontend
+          - --web.external-url=https://refactored-space-bassoon-6447q4747g5h56rq.github.dev/
+        ports:
+        - containerPort: 9090
